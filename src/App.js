@@ -14,6 +14,7 @@ export default function App() {
   const [isManager, setIsManager] = useState(false);
   const [lotteryVisible, setLotteryVisible] = useState(false);
   const [notification, setNotification] = useState();
+  const [managerNotification, setManagerNotification] = useState();
 
   useEffect(() => {
     const onInit = () => {
@@ -75,11 +76,11 @@ export default function App() {
       .catch(() => setNotification())
   };
 
-  const onClick = async () => {
+  const pickWinner = async () => {
     const accounts = await api.getAccounts();
 
-    setNotification('Oczekiwanie na wybór zwycięzcy...')
-    api.pickWinner(accounts).then(() => setNotification('Zwyciezca został wybrany!'))
+    setManagerNotification('Oczekiwanie na wybór zwycięzcy...')
+    api.pickWinner(accounts).then(() => setManagerNotification('Zwyciezca został wybrany!'))
   };
 
   const handleInput = (event) => {
@@ -132,9 +133,10 @@ export default function App() {
               <p className="text">Ready to pick a winner?</p>
               <button
                 className="button"
-                onClick={onClick}>
+                onClick={pickWinner}>
                 Wybierz zwycięzce
-          </button>
+              </button>
+              {managerNotification && <p className="notification">{managerNotification}</p>}
             </div>
           </>
         }
